@@ -37,6 +37,7 @@ class ProjectStatusesController extends Controller
      */
     public function index()
     {
-        return ProjectStatusesService::getAllProjectStatuses();
+        $projectStatuses = ProjectStatusesService::getAllProjectStatuses();
+        return $projectStatuses;
     }
 }

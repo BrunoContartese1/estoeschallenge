@@ -52,7 +52,8 @@ class ProjectsController extends Controller
      */
     public function index($projectName = '')
     {
-        return ProjectsService::getPaginatedProjects($projectName);
+        $projects = ProjectsService::getPaginatedProjects($projectName);
+        return $projects;
     }
 
     /**
@@ -88,7 +89,8 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        return ProjectsService::getProjectById($id);
+        $project =  ProjectsService::getProjectById($id);
+        return $project;
     }
 
     /**
@@ -123,7 +125,8 @@ class ProjectsController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        return ProjectsService::storeProject($request);
+        $project = ProjectsService::storeProject($request);
+        return response()->json($project, 201);
     }
 
     /**
@@ -166,7 +169,8 @@ class ProjectsController extends Controller
      */
     public function update(UpdateProjectRequest $request, $id)
     {
-        return ProjectsService::updateProject($request, $id);
+        $project = ProjectsService::updateProject($request, $id);
+        return response()->json($project,200);
     }
 
     /**
@@ -202,7 +206,8 @@ class ProjectsController extends Controller
      */
     public function destroy($id)
     {
-        return ProjectsService::destroyProject($id);
+        ProjectsService::destroyProject($id);
+        return response()->json(null, 204);
     }
 
     /**
@@ -238,7 +243,8 @@ class ProjectsController extends Controller
      */
     public function restore($id)
     {
-        return ProjectsService::restoreProject($id);
+        $project = ProjectsService::restoreProject($id);
+        return $project;
     }
 
 }

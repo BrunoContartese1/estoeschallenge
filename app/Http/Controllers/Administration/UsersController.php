@@ -37,6 +37,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return UsersService::getAllUsers();
+        $users = UsersService::getAllUsers();
+        return $users;
     }
 }

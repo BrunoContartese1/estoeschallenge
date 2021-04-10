@@ -23,7 +23,7 @@ class ProjectsService
                 ->paginate(5);
         } catch (\Exception $e) {
             Log::info("Ha ocurrido una excepción ( ProjectsService.getPaginatedProjects ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
+            throw $e;
         }
     }
 
@@ -32,14 +32,14 @@ class ProjectsService
         try {
             $project = Project::withTrashed()
                 ->with('projectManager', 'status', 'users', 'destroyer', 'creator', 'editor')
-                ->find($id);
+                ->findOrFail($id);
             if($project === null) {
                 return response()->json('Not found', 404);
             }
             return $project;
         } catch (\Exception $e) {
             Log::info("Ha ocurrido una excepción ( ProjectsService.getProjectById ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
+            throw $e;
         }
     }
 
@@ -55,18 +55,18 @@ class ProjectsService
                         ]);
             $project->users()->sync($request->users);
             DB::commit();
-            return response()->json('Ok', 200);
+            return $project;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::info("Ha ocurrido una excepción ( ProjectsService.storeProject ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
+            throw $e;
         }
     }
 
     public function updateProject($request, $id)
     {
         try {
-            $project = Project::withTrashed()->find($id);
+            $project = Project::withTrashed()->findOrFail($id);
             DB::beginTransaction();
             $project->update([
                 'name' => $request->name,
@@ -76,35 +76,23 @@ class ProjectsService
             ]);
             $project->users()->sync($request->users);
             DB::commit();
-            return response()->json('Ok', 200);
+            return $project;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::info("Ha ocurrido una excepción ( ProjectsService.updateProject ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
+            throw $e;
         }
     }
 
     public function destroyProject($id)
     {
-        try {
-            $project = Project::find($id);
-            $project->delete();
-            return response()->json('Ok', 200);
-        } catch (\Exception $e) {
-            Log::info("Ha ocurrido una excepción ( ProjectsService.destroyProject ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
-        }
+        $project = Project::findOrFail($id);
+        $project->delete();
     }
 
     public function restoreProject($id)
     {
-        try {
-            $project = Project::withTrashed()->find($id);
-            $project->restore();
-            return response()->json('Ok', 200);
-        } catch (\Exception $e) {
-            Log::info("Ha ocurrido una excepción ( ProjectsService.destroyProject ): {$e->getMessage()}. Código: {$e->getCode()}");
-            return response()->json('Ha ocurrido un error.', 500);
-        }
+        $project = Project::withTrashed()->findOrFail($id);
+        $project->restore();
     }
 }

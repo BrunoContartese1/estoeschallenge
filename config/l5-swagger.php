@@ -197,7 +197,7 @@ return [
          * Uncomment to add constants which can be used in annotations
          */
          'constants' => [
-            'L5_SWAGGER_CONST_HOST' => env('APP_URL', 'http://estoeschallenge.test'),
+            'L5_SWAGGER_CONST_HOST' => env('APP_URL', 'http://estoeschallenge.codesolutions.com.ar'),
          ],
     ],
 ];

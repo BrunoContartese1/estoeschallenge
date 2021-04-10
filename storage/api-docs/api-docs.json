@@ -8,11 +8,6 @@
         },
         "version": "1.0.0"
     },
-    "servers": [
-        {
-            "url": "http://estoeschallenge.test"
-        }
-    ],
     "paths": {
         "/api/administration/projectStatuses": {
             "get": {

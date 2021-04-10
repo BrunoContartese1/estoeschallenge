@@ -16,8 +16,6 @@ use Illuminate\Routing\Controller as BaseController;
  *              email="bruno.a.contartese@gmail.com"
  *          ),
  *      ),
- *      @OA\Server(url=L5_SWAGGER_CONST_HOST),
- *
  *      @OA\Tag(
  *          name="Proyectos",
  *          description="API Endpoints de Proyectos"

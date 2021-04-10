@@ -1,0 +1,650 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Estoes Challenge API",
+        "description": "Aplicación challenge para puesto de desarrollador backend",
+        "contact": {
+            "email": "bruno.a.contartese@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://estoeschallenge.test"
+        }
+    ],
+    "paths": {
+        "/api/administration/projectStatuses": {
+            "get": {
+                "tags": [
+                    "Estados de proyectos"
+                ],
+                "summary": "Devuelve una lista de todos los posibles estados de los proyectos.",
+                "description": "Devuelve una lista de todos los posibles estados de los proyectos.",
+                "operationId": "App\\Http\\Controllers\\Administration\\ProjectStatusesController::index",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa."
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No tiene permisos para realziar la acción"
+                    },
+                    "default": {
+                        "description": "Operación fallida."
+                    }
+                }
+            }
+        },
+        "/api/administration/projects/{projectName}": {
+            "get": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Obtener una lista paginada de proyectos",
+                "description": "Obtener una lista paginada de proyectos",
+                "operationId": "getProjectsList",
+                "parameters": [
+                    {
+                        "name": "projectName",
+                        "in": "path",
+                        "description": "Nombre del proyecto a buscar",
+                        "required": false,
+                        "allowEmptyValue": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pageNumber",
+                        "in": "query",
+                        "description": "Página de resultados requerida",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProjectResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/administration/projects/{id}/show": {
+            "get": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Obtener la información de un proyecto",
+                "description": "Retorna la información de un proyecto",
+                "operationId": "getProjectById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/administration/projects": {
+            "post": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Almacenar nuevo proyecto",
+                "description": "Retorna OK si la operación fue correcta.",
+                "operationId": "storeProject",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreProjectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Operación correcta.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "No se puede procesar la solicitud, datos de entrada incorrectos."
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/administration/projects/{id}": {
+            "post": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Actualizar un proyecto existente",
+                "description": "Retorna Ok si la operación fue correcta",
+                "operationId": "updateProject",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProjectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    },
+                    "404": {
+                        "description": "Proyecto no encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Eliminar un proyecto",
+                "description": "Eliminar un proyecto",
+                "operationId": "Delete a project",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/administration/projects/{id}/restore": {
+            "post": {
+                "tags": [
+                    "Proyectos"
+                ],
+                "summary": "Restaurar un proyecto",
+                "description": "Restaurar un proyecto",
+                "operationId": "Restore a project",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id del proyecto",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No autorizado"
+                    }
+                }
+            }
+        },
+        "/api/administration/users": {
+            "get": {
+                "tags": [
+                    "Usuarios"
+                ],
+                "summary": "Devuelve una lista de todos los usuarios.",
+                "description": "Devuelve una lista de todos los usuarios.",
+                "operationId": "App\\Http\\Controllers\\Administration\\UsersController::index",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa."
+                    },
+                    "401": {
+                        "description": "No autenticado"
+                    },
+                    "403": {
+                        "description": "No tiene permisos para realziar la acción"
+                    },
+                    "default": {
+                        "description": "Operación fallida."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Project": {
+                "title": "Project",
+                "description": "Project model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Nombre del proyecto",
+                        "type": "string",
+                        "example": "Un lindo proyecto"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Descripción del proyecto",
+                        "type": "string",
+                        "example": "Esta es una posible descripción del proyecto"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "deleted_at": {
+                        "title": "Deleted at",
+                        "description": "Fecha de eliminación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "created_by": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "updated_by": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "deleted_by": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "project_manager_id": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "project_status_id": {
+                        "$ref": "#/components/schemas/ProjectStatus"
+                    },
+                    "users": {
+                        "title": "Array of users beloning to the project",
+                        "description": "Array of users beloning to the project",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Project"
+                }
+            },
+            "ProjectStatus": {
+                "title": "ProjectStatus",
+                "description": "ProjectStatus model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Nombre del estado",
+                        "type": "string",
+                        "example": "Habilitado"
+                    },
+                    "created_by": {
+                        "title": "Author ID",
+                        "description": "ID del creador del Estado",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "updated_by": {
+                        "title": "Editor ID",
+                        "description": "ID del editor del Estado",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "deleted_by": {
+                        "title": "Destroyer ID",
+                        "description": "ID del destructor del Estado",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "deleted_at": {
+                        "title": "Deleted at",
+                        "description": "Fecha de eliminación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ProjectStatus"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Nombre del Usuario",
+                        "type": "string",
+                        "example": "Bruno Contartese"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "Email del usuario",
+                        "type": "string",
+                        "example": "bruno.a.contartese@gmail.com"
+                    },
+                    "created_by": {
+                        "title": "Author ID",
+                        "description": "ID del creador del usuario",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "updated_by": {
+                        "title": "Editor ID",
+                        "description": "ID del editor del usuario",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "deleted_by": {
+                        "title": "Destroyer ID",
+                        "description": "ID del destructor del usuario",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Fecha de creación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Fecha de actualización",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    },
+                    "deleted_at": {
+                        "title": "Deleted at",
+                        "description": "Fecha de eliminación",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2020-01-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            },
+            "StoreProjectRequest": {
+                "title": "Almacenar un nuevo proyecto",
+                "description": "Store Project request body data",
+                "required": [
+                    "name",
+                    "project_manager_id",
+                    "project_status_id",
+                    "users"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Nombre del nuevo proyecto",
+                        "type": "string",
+                        "example": "Un nuevo desafío"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "Descripción del nuevo proyecto",
+                        "type": "string",
+                        "example": "Esta es una posible descripción"
+                    },
+                    "project_manager_id": {
+                        "title": "Project manager id",
+                        "description": "ID project manager",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "project_status_id": {
+                        "title": "Project status id",
+                        "description": "ID del estado del proyecto",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "users": {
+                        "title": "Array of users beloning to the project",
+                        "description": "Array of users beloning to the project",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2,
+                            3
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProjectRequest": {
+                "title": "Actualizar un proyecto",
+                "description": "Update Project request body data",
+                "required": [
+                    "name",
+                    "project_manager_id",
+                    "project_status_id",
+                    "users"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Nombre del nuevo proyecto",
+                        "type": "string",
+                        "example": "Un nuevo desafío"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "Descripción del nuevo proyecto",
+                        "type": "string",
+                        "example": "Esta es una posible descripción"
+                    },
+                    "project_manager_id": {
+                        "title": "Project manager id",
+                        "description": "ID project manager",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "project_status_id": {
+                        "title": "Project status id",
+                        "description": "ID del estado del proyecto",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "users": {
+                        "title": "Array of users beloning to the project",
+                        "description": "Array of users beloning to the project",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2,
+                            3
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "ProjectResource": {
+                "title": "ProjectResource",
+                "description": "Project resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Project"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "ProjectResource"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Proyectos",
+            "description": "API Endpoints de Proyectos"
+        }
+    ],
+    "security": [
+        []
+    ]
+}

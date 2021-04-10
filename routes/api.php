@@ -20,7 +20,6 @@ Route::group(['prefix' => 'administration'], function () {
      * Route::resource('projects', 'App\Http\Controllers\Administration\ProjectsController')->except('create', 'edit');
      */
     Route::get('projects/{projectName?}', 'App\Http\Controllers\Administration\ProjectsController@index');
-    Route::get('getAllProjects', 'App\Http\Controllers\Administration\ProjectsController@index');
     Route::post('projects', 'App\Http\Controllers\Administration\ProjectsController@store');
     Route::get('projects/{project}/show', 'App\Http\Controllers\Administration\ProjectsController@show');
     Route::delete('projects/{project}', 'App\Http\Controllers\Administration\ProjectsController@destroy');

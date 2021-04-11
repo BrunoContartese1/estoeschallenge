@@ -152,6 +152,7 @@ class ProjectsController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Operación exitosa",
+     *         @OA\JsonContent(ref="#/components/schemas/Project")
      *       ),
      *      @OA\Response(
      *          response=401,

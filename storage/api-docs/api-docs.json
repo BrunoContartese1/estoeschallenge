@@ -193,7 +193,14 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Operación exitosa"
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Project"
+                                }
+                            }
+                        }
                     },
                     "401": {
                         "description": "No autenticado"

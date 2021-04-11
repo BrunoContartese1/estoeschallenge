@@ -21,5 +21,4 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
-### Luego de los pasos anteriores ingresar con el navegador web a la URL (Ej: estoeschallenge.codesolutions.com.ar)
-y probar la API.
+### Luego de los pasos anteriores ingresar con el navegador web a la URL (Ej: estoeschallenge.codesolutions.com.ar) y probar la API.
